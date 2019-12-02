@@ -84,6 +84,9 @@ set_target_properties(dmlc PROPERTIES
   CXX_STANDARD 11
   CXX_STANDARD_REQUIRED ON
   POSITION_INDEPENDENT_CODE ON)
+if(MSVC)
+  SET_TARGET_PROPERTIES(dmlc PROPERTIES DEBUG_POSTFIX "d")
+endif()
 list(APPEND LINKED_LIBRARIES_PRIVATE dmlc)
 
 # rabit
@@ -126,6 +129,10 @@ target_include_directories(xgboost
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include>
   $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>)
 target_link_libraries(xgboost PRIVATE ${LINKED_LIBRARIES_PRIVATE})
+if(MSVC)
+  set_target_properties(xgboost PROPERTIES OUTPUT_NAME "libpxgbm")
+  SET_TARGET_PROPERTIES(xgboost PROPERTIES DEBUG_POSTFIX "d")
+endif()
 
 # This creates its own shared library `xgboost4j'.
 if (JVM_BINDINGS)
